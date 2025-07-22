@@ -96,7 +96,7 @@ const Login = () => {
             </Link>
           </p>
         </form>
-        <SocialLogin></SocialLogin>
+        <SocialLogin mode="login" />
       </div>
     </div>
   );

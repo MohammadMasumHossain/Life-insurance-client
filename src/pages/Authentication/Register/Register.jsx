@@ -1,7 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useLocation, useNavigate } from 'react-router'; // ✅ FIXED
+import { Link, useLocation, useNavigate } from 'react-router';
+import Swal from 'sweetalert2';
 import useAuth from '../../../hooks/useAuth';
+import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Register = () => {
@@ -10,36 +13,79 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-   const location = useLocation();
-    const navigate = useNavigate();
-    const from = location.state?.from || '/';
 
-  const {createUser}=useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
-  const onSubmit = (data) => {
-    console.log(data);
-    console.log(createUser);
-    createUser  (data.email ,data.password)
-     .then(result =>{
-        console.log(result.user)
-        navigate(from);
-     })
-     .catch(error =>{
-        console.log(error);
-     })
-    
-   
+  const { createUser, updateUserProfile } = useAuth();
 
-    // handle register logic (e.g., upload photo, create user)
+  const createUserInDB = useMutation({
+    mutationFn: (userData) =>
+      axios.post('http://localhost:3000/users', userData), // Replace with your real backend
+    onSuccess: () => {
+      Swal.fire('Success!', 'Registration complete.', 'success');
+      navigate(from, { replace: true });
+    },
+    onError: (err) => {
+      if (err.response?.status === 409) {
+        Swal.fire('Already Registered', 'User already exists', 'info');
+      } else {
+        Swal.fire('Error', 'Failed to save user info.', 'error');
+      }
+    },
+  });
+
+  const onSubmit = async (data) => {
+    const { name, email, password } = data;
+
+    try {
+      const result = await createUser(email, password);
+      const loggedUser = result.user;
+
+      // Upload image to ImgBB
+      let imageUrl = '';
+      const photoFile = data.photo?.[0];
+      if (photoFile) {
+        const formData = new FormData();
+        formData.append('image', photoFile);
+
+        const res = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+          formData
+        );
+
+        imageUrl = res.data?.data?.url || '';
+      }
+
+      // Update Firebase profile
+      await updateUserProfile({
+        displayName: name,
+        photoURL: imageUrl,
+      });
+
+      // Send to MongoDB
+      const userInfo = {
+        name,
+        email,
+        role: 'customer',
+        photo: imageUrl,
+      };
+
+      createUserInDB.mutate(userInfo);
+    } catch (error) {
+      console.error(error);
+      Swal.fire('Error', error.message, 'error');
+    }
   };
 
   return (
-    <div className="flex items-center justify-center w-full px-4">
+    <div className="flex items-center justify-center min-h-screen px-4">
       <div className="card bg-base-100 w-full max-w-sm shadow-2xl py-5 px-6">
         <h2 className="font-semibold text-2xl text-center mb-4">Create an Account</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Name */}
+          {/* Full Name */}
           <div>
             <label className="label">Full Name</label>
             <input
@@ -48,9 +94,7 @@ const Register = () => {
               className="input input-bordered w-full"
               placeholder="Your Name"
             />
-            {errors.name?.type === 'required' && (
-              <p className="text-red-500 text-sm mt-1">Name is required</p>
-            )}
+            {errors.name && <p className="text-red-500 text-sm mt-1">Name is required</p>}
           </div>
 
           {/* Email */}
@@ -62,9 +106,7 @@ const Register = () => {
               className="input input-bordered w-full"
               placeholder="Email"
             />
-            {errors.email?.type === 'required' && (
-              <p className="text-red-500 text-sm mt-1">Email is required</p>
-            )}
+            {errors.email && <p className="text-red-500 text-sm mt-1">Email is required</p>}
           </div>
 
           {/* Password */}
@@ -84,20 +126,18 @@ const Register = () => {
               <p className="text-red-500 text-sm mt-1">Password is required</p>
             )}
             {errors.password?.type === 'minLength' && (
-              <p className="text-red-500 text-sm mt-1">
-                Password must be at least 6 characters
-              </p>
+              <p className="text-red-500 text-sm mt-1">Minimum 6 characters</p>
             )}
             {errors.password?.type === 'pattern' && (
               <p className="text-red-500 text-sm mt-1">
-                Must include at least one uppercase and one lowercase letter
+                Must include at least one uppercase and lowercase letter
               </p>
             )}
           </div>
 
           {/* Photo Upload */}
           <div>
-            <label className="label">Upload Photo</label>
+            <label className="label">Upload Profile Photo</label>
             <input
               type="file"
               {...register('photo')}
@@ -106,16 +146,21 @@ const Register = () => {
             />
           </div>
 
-          {/* Register Button */}
-          <button type="submit" className="btn btn-neutral w-full mt-2">Register</button>
+          {/* Submit */}
+          <button type="submit" className="btn btn-neutral w-full mt-2">
+            Register
+          </button>
 
-          {/* Login Link */}
+          {/* Link to Login */}
           <p className="text-center font-semibold pt-4 text-sm">
             Already have an account?{' '}
-            <Link className="text-red-500" to="/login">Login</Link>
+            <Link className="text-blue-500" to="/login">
+              Login
+            </Link>
           </p>
         </form>
-        <SocialLogin></SocialLogin>
+
+        <SocialLogin mode="register" />
       </div>
     </div>
   );

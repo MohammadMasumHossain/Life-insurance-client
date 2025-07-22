@@ -1,12 +1,35 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router'; // ✅ FIXED
 import logo from '../../../assets/logo.png';
+import useAuth from '../../../hooks/useAuth';
+import Swal from 'sweetalert2'; // ✅ Import SweetAlert
 
 const Navbar = () => {
+  const { logOut, user } = useAuth();
+
+  const handleSignOut = () => {
+    logOut()
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Logged out successfully',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Logout failed',
+          text: error.message,
+        });
+      });
+  };
+
   const navItems = (
     <>
       <li><NavLink to="/" className="font-semibold">Home</NavLink></li>
-      <li><NavLink to="/policies" className="font-semibold">All Policies</NavLink></li>
+      <li><NavLink to="/AllPolicies" className="font-semibold">All Policies</NavLink></li>
       <li><NavLink to="/blog" className="font-semibold">Blog</NavLink></li>
       <li><NavLink to="/dashboard" className="font-semibold">Dashboard</NavLink></li>
     </>
@@ -36,17 +59,29 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          {navItems}
-        </ul>
+        <ul className="menu menu-horizontal px-1">{navItems}</ul>
       </div>
 
       <div className="navbar-end space-x-2">
-        <Link to="/login" className="btn btn-sm btn-outline">Login</Link>
-        <Link to="/register" className="btn btn-sm btn-primary">Register</Link>
+        {user ? (
+          <>
+           
+            <button onClick={handleSignOut} className="btn btn-sm btn-outline">
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="btn btn-sm btn-outline">Login</Link>
+            <Link to="/register" className="btn btn-sm btn-primary">Register</Link>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
 export default Navbar;
+
+
+
