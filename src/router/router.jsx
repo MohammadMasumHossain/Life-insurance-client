@@ -14,6 +14,8 @@ import QuotePage from "../components/PoliciesDetails/QuotePage";
 import ApplicationForm from "../components/ApplicationForm";
 import PrivateRoute from "../routes/PrivateRoute";
 import MyPolicy from "../pages/Dashboard/Customer/MyPolicy/MyPolicy";
+import ManageApplications from "../pages/Dashboard/Admin/ManageApplications/ManageApplications";
+import ManageUser from "../pages/Dashboard/Admin/ManageUser/ManageUser";
 
 
 export const router = createBrowserRouter([
@@ -73,6 +75,14 @@ export const router = createBrowserRouter([
       {
         path:"mypolicy",
         element:<MyPolicy></MyPolicy>
+      },
+      {
+        path:"manageApplication",
+        element:<ManageApplications></ManageApplications>
+      },
+      {
+        path:"manageuser",
+        element:<ManageUser></ManageUser>
       }
     ]
   }

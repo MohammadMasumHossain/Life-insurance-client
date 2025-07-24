@@ -1,30 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+
+// Sample policies list - replace with your actual data or fetch it dynamically
+const policies = [
+  { policyType: "Level Term Insurance", coverageAmount: 1000000, termDuration: "30 years" },
+  { policyType: "Critical Illness Rider", coverageAmount: 800000, termDuration: "25 years" },
+  { policyType: "Whole Life Insurance", coverageAmount: 1500000, termDuration: "15 years" },
+  { policyType: "Comprehensive Life Cover", coverageAmount: 900000, termDuration: "25 years" },
+  { policyType: "Child Education Plan", coverageAmount: 1200000, termDuration: "20 years" },
+];
+
+const healthOptions = [
+  'Heart Disease',
+  'Diabetes',
+  'High Blood Pressure',
+  'Asthma',
+  'Cancer',
+  'Kidney Problems',
+  'Liver Disease',
+  'Mental Health Issues',
+  'Chronic Pain',
+  'Epilepsy',
+  'Tuberculosis',
+  'None'
+];
+
+// Utility to get unique values by key from policies
+const uniqueValues = (arr, key) => [...new Set(arr.map(item => item[key]))];
 
 const ApplicationForm = () => {
   const { register, handleSubmit, reset } = useForm();
   const [submitting, setSubmitting] = useState(false);
 
-  const healthOptions = [
-    'Heart Disease',
-    'Diabetes',
-    'High Blood Pressure',
-    'Asthma',
-    'Cancer',
-    'Kidney Problems',
-    'Liver Disease',
-    'Mental Health Issues',
-    'Chronic Pain',
-    'Epilepsy',
-    'Tuberculosis',
-    'None'
-  ];
+  // State to hold unique select options
+  const [policyTypes, setPolicyTypes] = useState([]);
+  const [coverageAmounts, setCoverageAmounts] = useState([]);
+  const [termDurations, setTermDurations] = useState([]);
+
+  useEffect(() => {
+    setPolicyTypes(uniqueValues(policies, 'policyType'));
+    setCoverageAmounts(uniqueValues(policies, 'coverageAmount'));
+    setTermDurations(uniqueValues(policies, 'termDuration'));
+  }, []);
 
   const onSubmit = async (data) => {
     setSubmitting(true);
 
+    // Prepare application object similar to your backend
     const application = {
       fullName: data.fullName,
       email: data.email,
@@ -37,7 +61,12 @@ const ApplicationForm = () => {
       nomineeNID: data.nomineeNID,
       healthConditions: Array.isArray(data.healthConditions)
         ? data.healthConditions
-        : [data.healthConditions],
+        : data.healthConditions
+          ? [data.healthConditions]
+          : [],
+      policyType: data.policyType,
+      coverageAmount: Number(data.coverageAmount),
+      termDuration: data.termDuration,
       status: 'Pending',
       submittedAt: new Date()
     };
@@ -62,6 +91,7 @@ const ApplicationForm = () => {
         <h2 className="text-3xl font-bold mb-6 text-center text-blue-700">Insurance Application Form</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+
           {/* Personal Info */}
           <div>
             <h3 className="text-xl font-semibold mb-4 text-gray-700">Personal Information</h3>
@@ -82,6 +112,36 @@ const ApplicationForm = () => {
               <input {...register('nomineeName', { required: true })} className="input input-bordered w-full" placeholder="Nominee Full Name" required />
               <input {...register('nomineeRelation', { required: true })} className="input input-bordered w-full" placeholder="Relationship" required />
               <input {...register('nomineeNID', { required: true })} className="input input-bordered w-full" placeholder="Nominee NID" required />
+            </div>
+          </div>
+
+          {/* Policy Details */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">Policy Details</h3>
+            <div className="grid md:grid-cols-3 gap-4">
+              {/* Policy Type */}
+              <select {...register('policyType', { required: true })} className="select select-bordered w-full" defaultValue="">
+                <option value="" disabled>Select Policy Type</option>
+                {policyTypes.map((type, idx) => (
+                  <option key={idx} value={type}>{type}</option>
+                ))}
+              </select>
+
+              {/* Coverage Amount */}
+              <select {...register('coverageAmount', { required: true })} className="select select-bordered w-full" defaultValue="">
+                <option value="" disabled>Select Coverage Amount</option>
+                {coverageAmounts.map((amount, idx) => (
+                  <option key={idx} value={amount}>{amount.toLocaleString()}</option>
+                ))}
+              </select>
+
+              {/* Term Duration */}
+              <select {...register('termDuration', { required: true })} className="select select-bordered w-full" defaultValue="">
+                <option value="" disabled>Select Term Duration</option>
+                {termDurations.map((duration, idx) => (
+                  <option key={idx} value={duration}>{duration}</option>
+                ))}
+              </select>
             </div>
           </div>
 
