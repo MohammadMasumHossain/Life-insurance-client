@@ -16,6 +16,7 @@ import PrivateRoute from "../routes/PrivateRoute";
 import MyPolicy from "../pages/Dashboard/Customer/MyPolicy/MyPolicy";
 import ManageApplications from "../pages/Dashboard/Admin/ManageApplications/ManageApplications";
 import ManageUser from "../pages/Dashboard/Admin/ManageUser/ManageUser";
+import ManagePolicies from "../pages/Dashboard/Admin/ManagePolicies/ManagePolicies";
 
 
 export const router = createBrowserRouter([
@@ -83,6 +84,10 @@ export const router = createBrowserRouter([
       {
         path:"manageuser",
         element:<ManageUser></ManageUser>
+      }, 
+      {
+         path:"managepolicies",
+         element:<ManagePolicies></ManagePolicies>
       }
     ]
   }
