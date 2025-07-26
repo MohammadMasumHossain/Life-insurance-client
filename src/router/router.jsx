@@ -17,6 +17,7 @@ import MyPolicy from "../pages/Dashboard/Customer/MyPolicy/MyPolicy";
 import ManageApplications from "../pages/Dashboard/Admin/ManageApplications/ManageApplications";
 import ManageUser from "../pages/Dashboard/Admin/ManageUser/ManageUser";
 import ManagePolicies from "../pages/Dashboard/Admin/ManagePolicies/ManagePolicies";
+import AssignedCustomers from "../pages/Dashboard/Agent/Assigned Customers/Assigned Customers";
 
 
 export const router = createBrowserRouter([
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
       {
          path:"managepolicies",
          element:<ManagePolicies></ManagePolicies>
+      },
+      {
+        path:"assignedcustomers",
+        element:<AssignedCustomers></AssignedCustomers>
       }
     ]
   }

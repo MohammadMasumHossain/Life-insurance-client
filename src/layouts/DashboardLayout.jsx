@@ -70,6 +70,14 @@ const DashboardLayout = () => {
               ManagePolicies
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/dashboard/assignedcustomers"
+              className={({ isActive }) => isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""}
+            >
+              Assigned Customers
+            </NavLink>
+          </li>
           {/* Add more links here */}
         </ul>
       </div>
