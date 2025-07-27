@@ -23,6 +23,7 @@ import PaymentPage from "../pages/Dashboard/Customer/PaymentPage/PaymentPage";
 import PaymentStatus from "../pages/Dashboard/Customer/PaymentStatus/PaymentStatus";
 import ClaimRequestPage from "../pages/Dashboard/Customer/ClaimRequestPage/ClaimRequestPage";
 import PolicyClearance from "../pages/Dashboard/Agent/PolicyClearance/PolicyClearance";
+import ManageTransactions from "../pages/Dashboard/Admin/ManageTransactions/ManageTransactions";
 // import PaymentStatus from "../pages/Dashboard/Customer/PaymentStatus/PaymentStatus";
 // import PaymentPage from "../pages/Dashboard/Customer/PaymentPage/PaymentPage";
 
