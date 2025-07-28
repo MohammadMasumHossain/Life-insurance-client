@@ -4,6 +4,7 @@ import PopularPolicies from '../PopularPolicies/PopularPolicies';
 import CustomerReviews from './CustomerReviews/CustomerReviews';
 import LatestBlog from '../LatestBlog/LatestBlog';
 import NewsletterSubscription from '../NewsletterSubscription/NewsletterSubscription';
+import MeetOurAgent from '../MeetOurAgent/MeetOurAgent';
 
 const Home = () => {
     return (
@@ -13,6 +14,7 @@ const Home = () => {
            <CustomerReviews></CustomerReviews>
            <LatestBlog></LatestBlog>
             <NewsletterSubscription></NewsletterSubscription>
+            <MeetOurAgent></MeetOurAgent>
         </div>
     );
 };
