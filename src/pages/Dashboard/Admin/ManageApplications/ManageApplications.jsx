@@ -37,14 +37,19 @@ const assignAgentApi = async ({ applicationId, agentId, agentName, agentEmail })
   });
 };
 
-const changeStatusApi = async ({ applicationId, status }) => {
-  return axios.patch(`${API}/applications/${applicationId}/status`, { status });
+const changeStatusApi = async ({ applicationId, status, rejectionFeedback }) => {
+  return axios.patch(`${API}/applications/${applicationId}/status`, { status, rejectionFeedback });
 };
 
 const ManageApplications = () => {
   const queryClient = useQueryClient();
 
   const [agentSelect, setAgentSelect] = useState({}); // { [applicationId]: agentId }
+
+  // New states for rejection modal
+  const [rejectionModalOpen, setRejectionModalOpen] = useState(false);
+  const [rejectionFeedback, setRejectionFeedback] = useState('');
+  const [rejectionApp, setRejectionApp] = useState(null);
 
   // Queries
   const {
@@ -93,6 +98,7 @@ const ManageApplications = () => {
     onError: () => Swal.fire('Error', 'Failed to update status', 'error'),
   });
 
+  // Handle Assign Agent button click
   const handleAssignAgent = (application) => {
     const agentId = agentSelect[application._id];
     if (!agentId) return Swal.fire('Warning', 'Please select an agent first', 'warning');
@@ -108,13 +114,43 @@ const ManageApplications = () => {
     });
   };
 
+  // Handle status change: open modal if rejecting, else update immediately
   const handleChangeStatus = (application, nextStatus) => {
-    changeStatusMutation.mutate({
-      applicationId: application._id,
-      status: nextStatus,
-    });
+    if (nextStatus === 'Rejected') {
+      setRejectionApp(application);
+      setRejectionFeedback(application.rejectionFeedback || '');
+      setRejectionModalOpen(true);
+    } else {
+      changeStatusMutation.mutate({
+        applicationId: application._id,
+        status: nextStatus,
+      });
+    }
   };
 
+  // Submit rejection feedback + status
+  const handleRejectSubmit = () => {
+    if (!rejectionFeedback.trim()) {
+      return Swal.fire('Warning', 'Please provide feedback for rejection', 'warning');
+    }
+
+    changeStatusMutation.mutate(
+      {
+        applicationId: rejectionApp._id,
+        status: 'Rejected',
+        rejectionFeedback,
+      },
+      {
+        onSuccess: () => {
+          setRejectionModalOpen(false);
+          setRejectionApp(null);
+          setRejectionFeedback('');
+        },
+      }
+    );
+  };
+
+  // View application details with rejection feedback shown
   const viewDetails = (app) => {
     const hc =
       app.healthConditions && app.healthConditions.length
@@ -163,6 +199,7 @@ const ManageApplications = () => {
             app.submittedAt ? new Date(app.submittedAt).toLocaleString() : 'N/A'
           }</p>
           <p><b>Assigned Agent:</b> ${app.assignedAgent?.name || 'Not Assigned'}</p>
+          <p><b>Rejection Feedback:</b> ${app.rejectionFeedback || 'None'}</p>
         </div>
       `,
       confirmButtonText: 'Close',
@@ -176,7 +213,7 @@ const ManageApplications = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <h2 className="text-3xl font-bold text-slate-800">Manage Applications</h2>
-          {(isAppsFetching || assignAgentMutation.isPending || changeStatusMutation.isPending) && (
+          {(isAppsFetching || assignAgentMutation.isLoading || changeStatusMutation.isLoading) && (
             <span className="loading loading-spinner loading-sm text-primary"></span>
           )}
         </div>
@@ -212,98 +249,95 @@ const ManageApplications = () => {
                     </td>
                     <td>
                       <span
-                        className={`badge ${statusColors[app.status] || 'bg-gray-500'} text-white`}
+                        className={`inline-block rounded-full px-3 py-1 text-white text-xs font-semibold ${statusColors[app.status]}`}
                       >
                         {app.status}
                       </span>
                     </td>
-
-                    {/* Assign Agent */}
-                    <td className="min-w-[260px]">
-                      <div className="flex items-center gap-2">
+                    <td>
+                      <div className="flex items-center gap-2 max-w-[220px]">
                         <select
-                          className="select select-bordered select-sm w-full max-w-xs"
+                          className="select select-bordered select-sm flex-grow"
                           value={agentSelect[app._id] || ''}
                           onChange={(e) =>
-                            setAgentSelect((prev) => ({ ...prev, [app._id]: e.target.value }))
+                            setAgentSelect((prev) => ({
+                              ...prev,
+                              [app._id]: e.target.value,
+                            }))
                           }
+                          disabled={app.status !== 'Pending'}
                         >
-                          <option value="" disabled>
-                            {agents.length ? 'Select Agent' : 'No agents found'}
-                          </option>
+                          <option value="">Select Agent</option>
                           {agents.map((agent) => (
                             <option key={agent._id} value={agent._id}>
-                              {agent.name} ({agent.email})
+                              {agent.name}
                             </option>
                           ))}
                         </select>
-
                         <button
+                          className="btn btn-sm btn-primary whitespace-nowrap"
                           onClick={() => handleAssignAgent(app)}
-                          disabled={assignAgentMutation.isPending || !agents.length}
-                          className="btn btn-xs btn-success whitespace-nowrap"
+                          disabled={
+                            !agentSelect[app._id] || app.status !== 'Pending' || assignAgentMutation.isLoading
+                          }
                         >
-                          {assignAgentMutation.isPending ? 'Assigning...' : 'Assign'}
+                          Assign
                         </button>
                       </div>
-                      {app.assignedAgent?.name && (
-                        <p className="text-xs text-gray-500 mt-1">
-                          Current: {app.assignedAgent.name}
-                        </p>
-                      )}
                     </td>
+                    <td className="flex flex-wrap gap-2">
+                      <button
+                        title="View Details"
+                        className="btn btn-sm btn-info"
+                        onClick={() => viewDetails(app)}
+                      >
+                        <FaEye />
+                      </button>
 
-                    {/* Actions */}
-                    <td className="min-w-[260px]">
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          onClick={() => viewDetails(app)}
-                          className="btn btn-xs btn-info"
-                          title="View Details"
-                        >
-                          <FaEye />
-                        </button>
-
-                        {app.status !== 'Rejected' && (
+                      {/* Status buttons */}
+                      {app.status === 'Pending' && (
+                        <>
                           <button
-                            onClick={() => handleChangeStatus(app, 'Rejected')}
-                            disabled={changeStatusMutation.isPending}
-                            className="btn btn-xs btn-error"
-                          >
-                            {changeStatusMutation.isPending ? 'Updating...' : 'Reject'}
-                          </button>
-                        )}
-
-                        {app.status !== 'Approved' && (
-                          <button
+                            className="btn btn-sm btn-success"
                             onClick={() => handleChangeStatus(app, 'Approved')}
-                            disabled={changeStatusMutation.isPending}
-                            className="btn btn-xs btn-primary"
+                            disabled={changeStatusMutation.isLoading}
                           >
-                            {changeStatusMutation.isPending ? 'Updating...' : 'Approve'}
+                            Approve
                           </button>
-                        )}
-
-                        {app.status !== 'Pending' && (
                           <button
-                            onClick={() => handleChangeStatus(app, 'Pending')}
-                            disabled={changeStatusMutation.isPending}
-                            className="btn btn-xs btn-warning text-white"
+                            className="btn btn-sm btn-error"
+                            onClick={() => handleChangeStatus(app, 'Rejected')}
+                            disabled={changeStatusMutation.isLoading}
                           >
-                            {changeStatusMutation.isPending ? 'Updating...' : 'Mark Pending'}
+                            Reject
                           </button>
-                        )}
-                      </div>
+                        </>
+                      )}
+                      {app.status === 'Approved' && (
+                        <button
+                          className="btn btn-sm btn-warning"
+                          onClick={() => handleChangeStatus(app, 'Pending')}
+                          disabled={changeStatusMutation.isLoading}
+                        >
+                          Mark Pending
+                        </button>
+                      )}
+                      {app.status === 'Rejected' && (
+                        <button
+                          className="btn btn-sm btn-warning"
+                          onClick={() => handleChangeStatus(app, 'Pending')}
+                          disabled={changeStatusMutation.isLoading}
+                        >
+                          Mark Pending
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
-
-                {!applications.length && (
+                {applications.length === 0 && (
                   <tr>
-                    <td colSpan="8">
-                      <div className="text-center py-10 text-gray-500">
-                        No applications found.
-                      </div>
+                    <td colSpan="8" className="text-center py-6 text-gray-500">
+                      No applications found.
                     </td>
                   </tr>
                 )}
@@ -312,6 +346,40 @@ const ManageApplications = () => {
           )}
         </div>
       </div>
+
+      {/* Rejection Feedback Modal */}
+      {rejectionModalOpen && (
+        <div className="fixed inset-0 bg-sky-50 bg-opacity-40 flex justify-center items-center z-50">
+          <div className="bg-gray-100 rounded-lg p-6 max-w-md w-full shadow-xl">
+            <h3 className="text-lg font-bold mb-4">Reject Application</h3>
+            <p className="mb-2">Please provide feedback for the rejection:</p>
+            <textarea
+              className="textarea textarea-bordered w-full mb-4"
+              rows={5}
+              value={rejectionFeedback}
+              onChange={(e) => setRejectionFeedback(e.target.value)}
+              placeholder="Enter rejection feedback here..."
+              disabled={changeStatusMutation.isLoading}
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                className="btn btn-sm btn-secondary"
+                onClick={() => setRejectionModalOpen(false)}
+                disabled={changeStatusMutation.isLoading}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-sm btn-error"
+                onClick={handleRejectSubmit}
+                disabled={changeStatusMutation.isLoading}
+              >
+                {changeStatusMutation.isLoading ? 'Submitting...' : 'Submit Rejection'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

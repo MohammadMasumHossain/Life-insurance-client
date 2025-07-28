@@ -4,20 +4,30 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 
 const fetchPolicies = async ({ queryKey }) => {
-  const [_key, page, filter] = queryKey;
-  const { data } = await axios.get(
-    `http://localhost:3000/policies?page=${page}&limit=9&category=${filter}`
-  );
+  const [_key, page, categoryFilter, searchTerm] = queryKey;
+
+  let query = `http://localhost:3000/policies?page=${page}&limit=9`;
+
+  if (categoryFilter) {
+    query += `&category=${encodeURIComponent(categoryFilter)}`;
+  }
+  if (searchTerm) {
+    query += `&search=${encodeURIComponent(searchTerm)}`;
+  }
+
+  const { data } = await axios.get(query);
   return data;
 };
 
 const AllPolicies = () => {
   const [page, setPage] = useState(1);
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [inputValue, setInputValue] = useState('');  // Controlled input
+  const [searchTerm, setSearchTerm] = useState('');  // Actual term used for querying
   const navigate = useNavigate();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['policies', page, categoryFilter],
+    queryKey: ['policies', page, categoryFilter, searchTerm],
     queryFn: fetchPolicies,
     keepPreviousData: true,
   });
@@ -26,14 +36,40 @@ const AllPolicies = () => {
 
   const handleCategoryChange = (e) => {
     setCategoryFilter(e.target.value);
-    setPage(1); // Reset to first page
+    setPage(1);
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleSearch = () => {
+    setSearchTerm(inputValue);
+    setPage(1);
   };
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 my-10">
       <h2 className="text-3xl font-bold mb-6 text-center text-primary">All Insurance Policies</h2>
 
-      {/* Filter Dropdown */}
+      {/* Search input with button */}
+      <div className="mb-4 flex justify-center gap-2">
+        <input
+          type="text"
+          placeholder="Search by keyword..."
+          value={inputValue}
+          onChange={handleInputChange}
+          className="input input-bordered w-full max-w-md"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') handleSearch();  // Optional: search on Enter press
+          }}
+        />
+        <button className="btn btn-primary" onClick={handleSearch}>
+          Search
+        </button>
+      </div>
+
+      {/* Category filter */}
       <div className="mb-6 flex justify-center">
         <select
           value={categoryFilter}
@@ -51,7 +87,7 @@ const AllPolicies = () => {
         </select>
       </div>
 
-      {/* Grid */}
+      {/* Policies grid and pagination unchanged */}
       {isLoading ? (
         <p className="text-center">Loading policies...</p>
       ) : isError ? (
@@ -72,7 +108,6 @@ const AllPolicies = () => {
                   if (e.key === 'Enter') navigate(`/policies/${policy._id}`);
                 }}
               >
-                {/* Image */}
                 <div className="rounded-md overflow-hidden mb-4">
                   <img
                     src={policy.image || 'https://via.placeholder.com/400x300?text=No+Image'}
@@ -81,7 +116,6 @@ const AllPolicies = () => {
                   />
                 </div>
 
-                {/* Text */}
                 <h3 className="text-xl font-bold text-gray-800 mb-2">{policy.title}</h3>
                 <p className="text-base text-gray-700 mb-1">
                   <strong>Category:</strong> {policy.category || 'N/A'}
@@ -93,7 +127,6 @@ const AllPolicies = () => {
             ))}
           </div>
 
-          {/* Pagination */}
           <div className="flex justify-center mt-10 gap-2 flex-wrap">
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
               <button
