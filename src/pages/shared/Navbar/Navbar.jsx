@@ -69,7 +69,7 @@ const Navbar = () => {
         {user ? (
           <>
            
-            <button onClick={handleSignOut} className="btn btn-sm btn-outline">
+            <button onClick={handleSignOut} className="btn btn-sm btn-primary ">
               Logout
             </button>
           </>

@@ -13,6 +13,8 @@ import {
   FiCheckCircle,
   FiDollarSign,
 } from "react-icons/fi";
+import useUserRole from "../hooks/useUserRole";
+
 
 const linkClasses = ({ isActive }) =>
   `flex items-center gap-3 px-3 py-2 rounded transition text-lg font-medium ${
@@ -21,7 +23,15 @@ const linkClasses = ({ isActive }) =>
       : "hover:bg-fuchsia-500/20 text-white"
   }`;
 
+  
+
 const DashboardLayout = () => {
+
+  const { role, 
+    
+   } = useUserRole();
+console.log("Final role in layout:", role);
+
   return (
     <div className="drawer drawer-mobile lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />

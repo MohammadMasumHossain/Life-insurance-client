@@ -13,7 +13,7 @@ const slides = [
     id: 2,
     title: "Insurance Made Easy",
     subtitle: "Simple, smart, and tailored to you.",
-    image: "https://i.ibb.co/qhKfb6Q/image1.png",
+    image: "https://i.ibb.co/cKDskw4m/banner2.png",
   },
   {
     id: 3,

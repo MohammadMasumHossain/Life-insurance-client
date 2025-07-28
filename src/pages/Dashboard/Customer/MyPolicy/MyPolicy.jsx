@@ -40,28 +40,29 @@ const MyPolicy = () => {
   };
 
   const handleSubmitReview = async () => {
-    if (!rating || !feedback.trim()) {
-      return Swal.fire('Error', 'Please provide both rating and feedback.', 'error');
-    }
+  if (!rating || !feedback.trim()) {
+    return Swal.fire('Error', 'Please provide both rating and feedback.', 'error');
+  }
 
-    const review = {
-      email: user.email,
-      policyId: selectedPolicy._id,
-      policyTitle: selectedPolicy.policyType,
-      rating,
-      feedback,
-    };
-
-    try {
-      await axios.post('http://localhost:3000/reviews', review);
-      Swal.fire('Success', 'Review submitted successfully!', 'success');
-      setShowModal(false);
-    } catch (err) {
-      console.error(err);
-      Swal.fire('Error', 'Failed to submit review.', 'error');
-    }
+  const review = {
+    email: user.email,
+    name: user.displayName || 'Anonymous',
+    photo: user.photoURL || 'https://i.ibb.co/ZYW3VTp/brown-brim.png',
+    policyId: selectedPolicy._id,
+    policyTitle: selectedPolicy.policyType,
+    rating,
+    feedback,
   };
 
+  try {
+    await axios.post('http://localhost:3000/reviews', review);
+    Swal.fire('Success', 'Review submitted successfully!', 'success');
+    setShowModal(false);
+  } catch (err) {
+    console.error(err);
+    Swal.fire('Error', 'Failed to submit review.', 'error');
+  }
+};
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-10 px-4 sm:px-8">
       <div className="max-w-6xl mx-auto">
