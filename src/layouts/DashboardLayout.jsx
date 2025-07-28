@@ -1,5 +1,25 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router"; // ✅ make sure this is from 'react-router-dom'
+import { NavLink, Outlet } from "react-router";
+import {
+  FiHome,
+  FiShield,
+  FiClipboard,
+  FiUsers,
+  FiFileText,
+  FiUserCheck,
+  FiBookOpen,
+  FiCreditCard,
+  FiAlertCircle,
+  FiCheckCircle,
+  FiDollarSign,
+} from "react-icons/fi";
+
+const linkClasses = ({ isActive }) =>
+  `flex items-center gap-3 px-3 py-2 rounded transition text-lg font-medium ${
+    isActive
+      ? "bg-fuchsia-500 text-black font-bold"
+      : "hover:bg-fuchsia-500/20 text-white"
+  }`;
 
 const DashboardLayout = () => {
   return (
@@ -14,7 +34,7 @@ const DashboardLayout = () => {
             <label htmlFor="my-drawer-2" className="btn btn-square btn-ghost">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-7 w-7" // Increased icon size
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -28,7 +48,7 @@ const DashboardLayout = () => {
               </svg>
             </label>
           </div>
-          <div className="flex-1 text-xl font-semibold ml-2">Dashboard</div>
+          <div className="flex-1 text-2xl font-bold ml-2">Dashboard</div>
         </div>
 
         {/* Outlet */}
@@ -42,118 +62,70 @@ const DashboardLayout = () => {
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
         <ul className="menu p-4 w-72 min-h-full bg-gray-800 text-white space-y-2">
           <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/mypolicy"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              My Policy
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/manageApplication"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              ManageApplicaton
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/manageuser"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              ManageUsers
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/managepolicies"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              ManagePolicies
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/assignedcustomers"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              Assigned Customers
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/manageblogs"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              Manage Blogs
+            <NavLink to="/" className={linkClasses}>
+              <FiHome size={22} /> Home
             </NavLink>
           </li>
 
           <li>
-            <NavLink
-              to="/dashboard/payment-status"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              Payment Status
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/claimrequestpage"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              Claim Request Page
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/policy-clearance"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              Policy Clearance
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/manage-transactions"
-              className={({ isActive }) =>
-                isActive ? "bg-fuchsia-500 text-black font-bold rounded" : ""
-              }
-            >
-              Manage Transactions
+            <NavLink to="/dashboard/mypolicy" className={linkClasses}>
+              <FiShield size={22} /> My Policy
             </NavLink>
           </li>
 
-          {/* Add more links here */}
+          <li>
+            <NavLink to="/dashboard/manageApplication" className={linkClasses}>
+              <FiClipboard size={22} /> Manage Application
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/dashboard/manageuser" className={linkClasses}>
+              <FiUsers size={22} /> Manage Users
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/dashboard/managepolicies" className={linkClasses}>
+              <FiFileText size={22} /> Manage Policies
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/dashboard/assignedcustomers" className={linkClasses}>
+              <FiUserCheck size={22} /> Assigned Customers
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/dashboard/manageblogs" className={linkClasses}>
+              <FiBookOpen size={22} /> Manage Blogs
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/dashboard/payment-status" className={linkClasses}>
+              <FiCreditCard size={22} /> Payment Status
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/dashboard/claimrequestpage" className={linkClasses}>
+              <FiAlertCircle size={22} /> Claim Request Page
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/dashboard/policy-clearance" className={linkClasses}>
+              <FiCheckCircle size={22} /> Policy Clearance
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/dashboard/manage-transactions" className={linkClasses}>
+              <FiDollarSign size={22} /> Manage Transactions
+            </NavLink>
+          </li>
         </ul>
       </div>
     </div>
