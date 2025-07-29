@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useLocation, useNavigate } from 'react-router'; // ✅ FIXED
+import { Link, useLocation, useNavigate } from 'react-router';
+import Swal from 'sweetalert2';            // <-- import SweetAlert2
 import SocialLogin from '../SocialLogin/SocialLogin';
 import useAuth from '../../../hooks/useAuth';
 
@@ -11,23 +12,33 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-       
-  const {signIn} =useAuth();
+  const { signIn } = useAuth();
   const location = useLocation();
-    const navigate = useNavigate();
-    const from = location.state?.from || '/';
+  const navigate = useNavigate();
+  const from = location.state?.from || '/';
 
   const onSubmit = (data) => {
-    console.log("Login data:", data);
-     signIn (data.email ,data.password)
-     .then(result =>{
-        console.log(result.user)
-         navigate(from);
-     })
-     .catch(error =>{
-        console.log(error);
-     })
-    // handle login logic
+    console.log('Login data:', data);
+    signIn(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful',
+          text: `Welcome back, ${result.user.displayName || result.user.email}!`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.error(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: error.message || 'Please check your credentials and try again.',
+        });
+      });
   };
 
   return (

@@ -3,17 +3,18 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
 import useAuth from "../../../../hooks/useAuth";
-import axiosSecure from "../../../../hooks/axiosSecure"; // must be an axios instance
+import axiosSecure from "../../../../hooks/axiosSecure";
 import BlogModal from "./BlogModal";
+import useUserRole from "../../../../hooks/useUserRole";
 
 const ManageBlogs = () => {
-  const { user, role } = useAuth();
+  const { user } = useAuth();
+  const { role } = useUserRole();
   const qc = useQueryClient();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBlog, setEditingBlog] = useState(null);
 
-  // ===== Fetch Blogs =====
   const {
     data: blogs = [],
     isLoading,
@@ -32,7 +33,6 @@ const ManageBlogs = () => {
     enabled: !!user?.email,
   });
 
-  // ===== Create Blog =====
   const createMutation = useMutation({
     mutationFn: async (payload) => {
       const { data } = await axiosSecure.post("/blogs", payload);
@@ -46,15 +46,10 @@ const ManageBlogs = () => {
     },
     onError: (err) => {
       console.error("Create Blog error:", err);
-      Swal.fire(
-        "Error",
-        err?.response?.data?.message || "Failed to publish",
-        "error"
-      );
+      Swal.fire("Error", err?.response?.data?.message || "Failed to publish", "error");
     },
   });
 
-  // ===== Update Blog =====
   const updateMutation = useMutation({
     mutationFn: async ({ id, payload }) => {
       const { data } = await axiosSecure.patch(`/blogs/${id}`, payload);
@@ -68,15 +63,10 @@ const ManageBlogs = () => {
     },
     onError: (err) => {
       console.error("Update Blog error:", err);
-      Swal.fire(
-        "Error",
-        err?.response?.data?.message || "Failed to update",
-        "error"
-      );
+      Swal.fire("Error", err?.response?.data?.message || "Failed to update", "error");
     },
   });
 
-  // ===== Delete Blog =====
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
       const { data } = await axiosSecure.delete(`/blogs/${id}`);
@@ -88,11 +78,7 @@ const ManageBlogs = () => {
     },
     onError: (err) => {
       console.error("Delete Blog error:", err);
-      Swal.fire(
-        "Error",
-        err?.response?.data?.message || "Failed to delete",
-        "error"
-      );
+      Swal.fire("Error", err?.response?.data?.message || "Failed to delete", "error");
     },
   });
 
@@ -155,6 +141,7 @@ const ManageBlogs = () => {
                 <th>#</th>
                 <th>Title</th>
                 <th className="hidden md:table-cell">Author</th>
+                <th className="hidden md:table-cell">Author Email</th>
                 <th className="hidden md:table-cell">Publish Date</th>
                 <th className="text-right">Actions</th>
               </tr>
@@ -167,6 +154,7 @@ const ManageBlogs = () => {
                     {b.title}
                   </td>
                   <td className="hidden md:table-cell">{b.author}</td>
+                  <td className="hidden md:table-cell">{b.authorEmail}</td>
                   <td className="hidden md:table-cell">
                     {b.publishDate
                       ? dayjs(b.publishDate).format("MMM D, YYYY h:mm A")
@@ -206,6 +194,7 @@ const ManageBlogs = () => {
               ...data,
               author: user?.displayName || user?.email,
               authorEmail: user?.email,
+              publishDate: editingBlog?.publishDate || new Date().toISOString(),
             };
             if (editingBlog) {
               updateMutation.mutate({ id: editingBlog._id, payload });

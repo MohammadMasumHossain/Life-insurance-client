@@ -21,17 +21,30 @@ const Register = () => {
   const { createUser, updateUserProfile } = useAuth();
 
   const createUserInDB = useMutation({
-    mutationFn: (userData) =>
-      axios.post('http://localhost:3000/users', userData), // Replace with your real backend
+    mutationFn: (userData) => axios.post('http://localhost:3000/users', userData),
     onSuccess: () => {
-      Swal.fire('Success!', 'Registration complete.', 'success');
+      Swal.fire({
+        icon: 'success',
+        title: 'Registration Successful',
+        text: 'Your account has been created successfully.',
+        timer: 2000,
+        showConfirmButton: false,
+      });
       navigate(from, { replace: true });
     },
     onError: (err) => {
       if (err.response?.status === 409) {
-        Swal.fire('Already Registered', 'User already exists', 'info');
+        Swal.fire({
+          icon: 'info',
+          title: 'Already Registered',
+          text: 'An account with this email already exists. Please log in.',
+        });
       } else {
-        Swal.fire('Error', 'Failed to save user info.', 'error');
+        Swal.fire({
+          icon: 'error',
+          title: 'Registration Failed',
+          text: 'Unable to save your information. Please try again later.',
+        });
       }
     },
   });
@@ -43,7 +56,7 @@ const Register = () => {
       const result = await createUser(email, password);
       const loggedUser = result.user;
 
-      // Upload image to ImgBB
+      // Upload image to ImgBB if photo selected
       let imageUrl = '';
       const photoFile = data.photo?.[0];
       if (photoFile) {
@@ -58,13 +71,13 @@ const Register = () => {
         imageUrl = res.data?.data?.url || '';
       }
 
-      // Update Firebase profile
+      // Update Firebase profile with displayName and photoURL
       await updateUserProfile({
         displayName: name,
         photoURL: imageUrl,
       });
 
-      // Send to MongoDB
+      // Prepare user info for MongoDB
       const userInfo = {
         name,
         email,
@@ -72,10 +85,15 @@ const Register = () => {
         photo: imageUrl,
       };
 
+      // Save user info to backend
       createUserInDB.mutate(userInfo);
     } catch (error) {
       console.error(error);
-      Swal.fire('Error', error.message, 'error');
+      Swal.fire({
+        icon: 'error',
+        title: 'Registration Error',
+        text: error.message || 'Something went wrong during registration.',
+      });
     }
   };
 

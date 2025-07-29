@@ -1,11 +1,13 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router'; // ✅ FIXED
+import { Link, NavLink } from 'react-router'; // ✅ Use react-router-dom
 import logo from '../../../assets/logo.png';
 import useAuth from '../../../hooks/useAuth';
-import Swal from 'sweetalert2'; // ✅ Import SweetAlert
+import Swal from 'sweetalert2';
+import useUserRole from '../../../hooks/useUserRole';
 
-const Navbar = () => {
+const Navbar2 = () => {
   const { logOut, user } = useAuth();
+  const { role } = useUserRole();
 
   const handleSignOut = () => {
     logOut()
@@ -26,21 +28,27 @@ const Navbar = () => {
       });
   };
 
+  const getBadgeColor = () => {
+    if (role === 'admin') return 'badge-error';
+    if (role === 'agent') return 'badge-primary';
+    return 'badge-success';
+  };
+
   const navItems = (
     <>
-      <li><NavLink to="/" className="font-semibold">Home</NavLink></li>
-      <li><NavLink to="/AllPolicies" className="font-semibold">All Policies</NavLink></li>
-      <li><NavLink to="/blog" className="font-semibold">Blog</NavLink></li>
-     {
-       <> <li><NavLink to="/dashboard" className="font-semibold">Dashboard</NavLink></li>
-      </>
-     }
+      
     </>
   );
 
   return (
     <div className="navbar bg-base-100 shadow-sm px-4 py-2">
-      <div className="navbar-start">
+      <div className="navbar-start flex items-center gap-3">
+        {/* {user && role && (
+          <span className={`badge ${getBadgeColor()} font-semibold capitalize`}>
+            {role}
+          </span>
+        )} */}
+
         <div className="dropdown lg:hidden">
           <label tabIndex={0} className="btn btn-ghost">
             <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -59,6 +67,12 @@ const Navbar = () => {
           <img src={logo} alt="LifeSecure Logo" className="w-10 h-10" />
           <span>LifeSecure</span>
         </Link>
+
+        {user && role && (
+          <span className={`badge ${getBadgeColor()} font-semibold capitalize`}>
+            {role}
+          </span>
+        )}
       </div>
 
       <div className="navbar-center hidden lg:flex">
@@ -68,19 +82,16 @@ const Navbar = () => {
       <div className="navbar-end space-x-2">
         {user ? (
           <>
-            
-            <Link to="/profile" className="btn btn-sm btn-outline">
+            <Link to="/dashboard/profile" className="btn btn-sm btn-outline">
               Profile
             </Link>
-
-            <button onClick={handleSignOut} className="btn btn-sm btn-primary ">
+            <button onClick={handleSignOut} className="btn btn-sm btn-primary">
               Logout
             </button>
           </>
         ) : (
           <>
             <Link to="/login" className="btn btn-sm btn-outline">Login</Link>
-            <Link to="/register" className="btn btn-sm btn-primary">Register</Link>
           </>
         )}
       </div>
@@ -88,7 +99,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
-
-
-
+export default Navbar2;

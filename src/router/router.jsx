@@ -25,7 +25,10 @@ import ClaimRequestPage from "../pages/Dashboard/Customer/ClaimRequestPage/Claim
 import PolicyClearance from "../pages/Dashboard/Agent/PolicyClearance/PolicyClearance";
 import ManageTransactions from "../pages/Dashboard/Admin/ManageTransactions/ManageTransactions";
 import AdminRoute from "../routes/AdminRoute";
+import CustomerRoute from "../routes/CustomerRoute";
+import AgentRoute from "../routes/AgentRoute";
 import Forbidden from "../pages/Forbideen/Forbideen";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
 // import PaymentStatus from "../pages/Dashboard/Customer/PaymentStatus/PaymentStatus";
 // import PaymentPage from "../pages/Dashboard/Customer/PaymentPage/PaymentPage";
 
@@ -42,6 +45,12 @@ export const router = createBrowserRouter([
         path:"/forbidden",
         Component:Forbidden
       },
+
+      {
+        path:'profile',
+        element:<ProfilePage></ProfilePage>
+      },
+      
       {
         path: "/quote",
         element: (
@@ -84,15 +93,24 @@ export const router = createBrowserRouter([
       { path: "manageApplication", element: <AdminRoute><ManageApplications /></AdminRoute> },
       { path: "manageuser", element: <AdminRoute> <ManageUser /> </AdminRoute>  },
       { path: "managepolicies", element: <AdminRoute> <ManagePolicies /></AdminRoute>  },
-      { path: "assignedcustomers", element: <AssignedCustomers /> },
+      { path: "assignedcustomers", element: <AgentRoute> <AssignedCustomers /></AgentRoute>  },
       { path: "manageblogs", element: <ManageBlogs /> },
       {
+        path: "manageblogs", element: <AdminRoute><ManageBlogs></ManageBlogs></AdminRoute>
+      },
+      {
+        path:'profile',
+        element:<ProfilePage></ProfilePage>
+      },
+       
+     
+      {
         path: "claimrequestpage",
-        element: <ClaimRequestPage></ClaimRequestPage>,
+        element: <CustomerRoute><ClaimRequestPage></ClaimRequestPage></CustomerRoute> ,
       },
       {
         path: "policy-clearance",
-        element: <PolicyClearance />,
+        element: <AgentRoute> <PolicyClearance /></AgentRoute> ,
       },
       {
         path: "manage-transactions",

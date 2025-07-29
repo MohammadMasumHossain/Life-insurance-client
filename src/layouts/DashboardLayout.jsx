@@ -14,6 +14,8 @@ import {
   FiDollarSign,
 } from "react-icons/fi";
 import useUserRole from "../hooks/useUserRole";
+import Navbar2 from "../pages/shared/Navbar/Navbar2";
+
 
 
 const linkClasses = ({ isActive }) =>
@@ -31,7 +33,12 @@ const DashboardLayout = () => {
   console.log(role);
 
   return (
-    <div className="drawer drawer-mobile lg:drawer-open">
+    <div>
+     
+       <Navbar2 ></Navbar2>
+     
+     
+      <div className="drawer drawer-mobile lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
       {/* Main content */}
@@ -95,6 +102,11 @@ const DashboardLayout = () => {
               <FiFileText size={22} /> Manage Policies
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/dashboard/manageblogs" className={linkClasses}>
+              <FiBookOpen size={22} /> Manage Blogs
+            </NavLink>
+          </li>
 
           <li>
             <NavLink to="/dashboard/manage-transactions" className={linkClasses}>
@@ -151,6 +163,7 @@ const DashboardLayout = () => {
 
         </ul>
       </div>
+    </div>
     </div>
   );
 };
