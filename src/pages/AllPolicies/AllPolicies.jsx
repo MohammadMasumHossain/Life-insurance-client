@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
+import { Helmet } from "react-helmet-async";
 
 const fetchPolicies = async ({ queryKey }) => {
   const [_key, page, categoryFilter, searchTerm] = queryKey;
@@ -50,6 +51,9 @@ const AllPolicies = () => {
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 my-10">
+      <Helmet>
+        <title>All policies | My Insurance Platform</title>
+      </Helmet>
       <h2 className="text-3xl font-bold mb-6 text-center text-primary">
         All Insurance Policies
       </h2>

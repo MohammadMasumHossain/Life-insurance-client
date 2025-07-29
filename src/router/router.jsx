@@ -29,6 +29,7 @@ import CustomerRoute from "../routes/CustomerRoute";
 import AgentRoute from "../routes/AgentRoute";
 import Forbidden from "../pages/Forbideen/Forbideen";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 // import PaymentStatus from "../pages/Dashboard/Customer/PaymentStatus/PaymentStatus";
 // import PaymentPage from "../pages/Dashboard/Customer/PaymentPage/PaymentPage";
 
@@ -87,6 +88,7 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      { index: true, element: <DashboardHome /> },
       { path: "mypolicy", element: <CustomerRoute> <MyPolicy /></CustomerRoute>  },
       { path: "payment-status", element:<CustomerRoute> <PaymentStatus /></CustomerRoute>  }, // ✅ Added Payment Status
       { path: "payment/:policyId", element:<CustomerRoute> <PaymentPage /></CustomerRoute>  }, // ✅ Added Payment Page

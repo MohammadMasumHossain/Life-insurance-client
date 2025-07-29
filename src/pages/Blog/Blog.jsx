@@ -1,25 +1,33 @@
-import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { format } from 'date-fns';
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { format } from "date-fns";
+import { Helmet } from "react-helmet-async";
 
 const Blog = () => {
   const [selectedBlog, setSelectedBlog] = useState(null);
 
   const { data: blogs = [], isLoading } = useQuery({
-    queryKey: ['blogs'],
+    queryKey: ["blogs"],
     queryFn: async () => {
-      const res = await axios.get('http://localhost:3000/blogs'); // Replace with your backend URL if deployed
+      const res = await axios.get("http://localhost:3000/blogs"); // Replace with your backend URL if deployed
       return res.data;
     },
   });
 
-  if (isLoading) return <div className="text-center py-10">Loading blogs...</div>;
+  if (isLoading)
+    return <div className="text-center py-10">Loading blogs...</div>;
 
   return (
     <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <Helmet>
+        <title>Blog | My Insurance Platform</title>
+      </Helmet>
       {blogs.map((blog) => (
-        <div key={blog._id} className="bg-white shadow-md rounded-lg overflow-hidden">
+        <div
+          key={blog._id}
+          className="bg-white shadow-md rounded-lg overflow-hidden"
+        >
           <img
             src={blog.image}
             alt={blog.title}
@@ -29,7 +37,7 @@ const Blog = () => {
           <div className="p-4 space-y-2">
             <h2 className="text-xl font-semibold">{blog.title}</h2>
             <p className="text-sm text-gray-600">
-              {blog.content?.split(' ').slice(0, 10).join(' ')}...
+              {blog.content?.split(" ").slice(0, 10).join(" ")}...
             </p>
 
             <div className="flex items-center mt-2 gap-2">
@@ -47,7 +55,7 @@ const Blog = () => {
             </div>
 
             <p className="text-xs text-gray-400">
-              Published: {format(new Date(blog.publishDate), 'PPP')}
+              Published: {format(new Date(blog.publishDate), "PPP")}
             </p>
 
             <button
@@ -78,8 +86,8 @@ const Blog = () => {
             <h2 className="text-2xl font-bold mt-4">{selectedBlog.title}</h2>
             <p className="text-sm text-gray-500 mt-1">
               By <strong>{selectedBlog.author}</strong> (
-              {selectedBlog.authorEmail}) on{' '}
-              {format(new Date(selectedBlog.publishDate), 'PPP')}
+              {selectedBlog.authorEmail}) on{" "}
+              {format(new Date(selectedBlog.publishDate), "PPP")}
             </p>
             <p className="text-gray-700 mt-4">{selectedBlog.content}</p>
           </div>

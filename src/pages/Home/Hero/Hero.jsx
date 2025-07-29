@@ -8,7 +8,7 @@ const slides = [
     id: 1,
     title: "Secure Your Tomorrow Today",
     subtitle: "Protect your loved ones with confidence.",
-    image: "https://i.ibb.co/qhKfb6Q/image1.png",
+    image: "https://i.ibb.co/ZpG7CDC5/banner3.png",
   },
   {
     id: 2,
@@ -21,6 +21,7 @@ const slides = [
     title: "Peace of Mind, Guaranteed",
     subtitle: "Plans that grow with your family.",
     image: "https://i.ibb.co/qhKfb6Q/image1.png",
+    
   },
 ];
 
@@ -40,10 +41,11 @@ const Hero = () => {
             <img
               src={slide.image}
               alt={slide.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-top
+ object-cover"
             />
             {/* Overlay content */}
-            <div className="absolute inset-0  bg-opacity-50 flex flex-col justify-center items-center text-white px-4">
+            <div className="absolute inset-0  bg-opacity-50 flex flex-col justify-center items-center text-black px-4">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4">
                 {slide.title}
               </h1>

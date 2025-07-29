@@ -49,7 +49,7 @@ const LatestBlog = () => {
             <p className="text-gray-700 mb-4 line-clamp-2">{blog.content}</p>
             <button
               onClick={() => openModal(blog)}
-              className="mt-auto inline-block bg-sky-600 hover:bg-sky-700 hover:bg-sky-700 text-white font-semibold px-5 py-2 rounded-md transition"
+              className="mt-auto inline-block bg-sky-600 hover:bg-sky-700  text-white font-semibold px-5 py-2 rounded-md transition"
             >
               Read More
             </button>
@@ -60,7 +60,7 @@ const LatestBlog = () => {
       <div className="text-center mt-12">
         <button
           onClick={() => navigate('/blog')}
-          className="inline-block bg-sky-600 hover:bg-sky-700 hover:bg-sky-700 text-white font-semibold px-8 py-3 rounded-md transition"
+          className="inline-block bg-sky-600 hover:bg-sky-700  text-white font-semibold px-8 py-3 rounded-md transition"
         >
           All Blogs & Articles
         </button>

@@ -77,7 +77,7 @@ const DashboardLayout = () => {
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
         <ul className="menu p-4 w-72 min-h-full bg-gray-800 text-white space-y-2">
           <li>
-            <NavLink to="/" className={linkClasses}>
+            <NavLink to="/dashboard" className={linkClasses}>
               <FiHome size={22} /> Home
             </NavLink>
           </li>
