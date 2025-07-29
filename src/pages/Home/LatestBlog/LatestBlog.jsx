@@ -59,7 +59,7 @@ const LatestBlog = () => {
 
       <div className="text-center mt-12">
         <button
-          onClick={() => navigate('/blogs')}
+          onClick={() => navigate('/blog')}
           className="inline-block bg-sky-600 hover:bg-sky-700 hover:bg-sky-700 text-white font-semibold px-8 py-3 rounded-md transition"
         >
           All Blogs & Articles

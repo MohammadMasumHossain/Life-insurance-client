@@ -27,10 +27,8 @@ const linkClasses = ({ isActive }) =>
 
 const DashboardLayout = () => {
 
-  const { role, 
-    
-   } = useUserRole();
-console.log("Final role in layout:", role);
+  const { role , roleLoading } = useUserRole();
+  console.log(role);
 
   return (
     <div className="drawer drawer-mobile lg:drawer-open">
@@ -77,13 +75,10 @@ console.log("Final role in layout:", role);
             </NavLink>
           </li>
 
-          <li>
-            <NavLink to="/dashboard/mypolicy" className={linkClasses}>
-              <FiShield size={22} /> My Policy
-            </NavLink>
-          </li>
-
-          <li>
+        { 
+        !roleLoading && role === 'admin' &&
+          <>
+            <li>
             <NavLink to="/dashboard/manageApplication" className={linkClasses}>
               <FiClipboard size={22} /> Manage Application
             </NavLink>
@@ -102,6 +97,16 @@ console.log("Final role in layout:", role);
           </li>
 
           <li>
+            <NavLink to="/dashboard/manage-transactions" className={linkClasses}>
+              <FiDollarSign size={22} /> Manage Transactions
+            </NavLink>
+          </li>
+          </>
+        }
+
+          { !roleLoading && role === 'agent' &&
+            <>
+            <li>
             <NavLink to="/dashboard/assignedcustomers" className={linkClasses}>
               <FiUserCheck size={22} /> Assigned Customers
             </NavLink>
@@ -110,6 +115,23 @@ console.log("Final role in layout:", role);
           <li>
             <NavLink to="/dashboard/manageblogs" className={linkClasses}>
               <FiBookOpen size={22} /> Manage Blogs
+            </NavLink>
+          </li>
+
+           <li>
+            <NavLink to="/dashboard/policy-clearance" className={linkClasses}>
+              <FiCheckCircle size={22} /> Policy Clearance
+            </NavLink>
+          </li>
+            </>
+          }
+
+          {
+            !roleLoading && role === 'customer' &&
+            <>
+            <li>
+            <NavLink to="/dashboard/mypolicy" className={linkClasses}>
+              <FiShield size={22} /> My Policy
             </NavLink>
           </li>
 
@@ -124,18 +146,9 @@ console.log("Final role in layout:", role);
               <FiAlertCircle size={22} /> Claim Request Page
             </NavLink>
           </li>
+            </>
+          }
 
-          <li>
-            <NavLink to="/dashboard/policy-clearance" className={linkClasses}>
-              <FiCheckCircle size={22} /> Policy Clearance
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink to="/dashboard/manage-transactions" className={linkClasses}>
-              <FiDollarSign size={22} /> Manage Transactions
-            </NavLink>
-          </li>
         </ul>
       </div>
     </div>

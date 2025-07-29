@@ -1,6 +1,7 @@
 import React from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+import { NavLink } from 'react-router';
 
 const slides = [
   {
@@ -49,9 +50,9 @@ const Hero = () => {
               <p className="text-base sm:text-lg md:text-xl text-center mb-6 max-w-xl">
                 {slide.subtitle}
               </p>
-              <button className="bg-blue-600 hover:bg-blue-700 transition text-white font-semibold py-3 px-6 rounded">
+             <NavLink to='/quote'><button className="bg-blue-600 hover:bg-blue-700 transition text-white font-semibold py-3 px-6 rounded">
                 Get a Free Quote
-              </button>
+              </button></NavLink> 
             </div>
           </div>
         ))}

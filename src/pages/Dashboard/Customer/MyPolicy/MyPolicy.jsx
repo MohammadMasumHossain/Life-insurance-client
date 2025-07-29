@@ -222,7 +222,6 @@
 
 // export default MyPolicy;
 
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -287,60 +286,43 @@ const MyPolicy = () => {
   };
 
   // New function: generate and download policy PDF
- const downloadPolicyPDF = (policy) => {
-  const doc = new jsPDF();
+  const downloadPolicyPDF = (policy) => {
+    const doc = new jsPDF();
 
-  doc.setFontSize(18);
-  doc.text('Insurance Policy Document', 14, 22);
-  doc.setFontSize(12);
+    doc.setFontSize(18);
+    doc.text('Insurance Policy Document', 14, 22);
+    doc.setFontSize(12);
 
-  doc.text(`Policy Type: ${policy.policyType || 'N/A'}`, 14, 40);
-  doc.text(`Full Name: ${policy.fullName || 'N/A'}`, 14, 50);
-  doc.text(`Email: ${policy.email || 'N/A'}`, 14, 60);
-  doc.text(`Address: ${policy.address || 'N/A'}`, 14, 70);
-  doc.text(`Phone Number: ${policy.phoneNumber || 'N/A'}`, 14, 80);
-  doc.text(
-    `Date of Birth: ${
-      policy.dateOfBirth ? new Date(policy.dateOfBirth).toLocaleDateString() : 'N/A'
-    }`,
-    14,
-    90
-  );
-  doc.text(`NID: ${policy.nid || 'N/A'}`, 14, 100);
+    // User details
+    doc.text(`Policy Type: ${policy.policyType || 'N/A'}`, 14, 40);
+    doc.text(`Full Name: ${policy.fullName || 'N/A'}`, 14, 50);
+    doc.text(`Email: ${policy.email || 'N/A'}`, 14, 60);
+    doc.text(`Address: ${policy.address || 'N/A'}`, 14, 70);
+    doc.text(`Phone Number: ${policy.phoneNumber || 'N/A'}`, 14, 80);
+    doc.text(`Date of Birth: ${policy.dateOfBirth ? new Date(policy.dateOfBirth).toLocaleDateString() : 'N/A'}`, 14, 90);
+    doc.text(`NID: ${policy.nid || 'N/A'}`, 14, 100);
 
-  doc.text(`Nominee Name: ${policy.nomineeName || 'N/A'}`, 14, 110);
-  doc.text(`Nominee Relationship: ${policy.nomineeRelationship || 'N/A'}`, 14, 120);
-  doc.text(`Nominee NID: ${policy.nomineeNID || 'N/A'}`, 14, 130);
+    // Nominee details
+    doc.text(`Nominee Name: ${policy.nomineeName || 'N/A'}`, 14, 110);
+    doc.text(`Nominee Relationship: ${policy.nomineeRelationship || 'N/A'}`, 14, 120);
+    doc.text(`Nominee NID: ${policy.nomineeNID || 'N/A'}`, 14, 130);
 
-  const healthConditions = policy.healthConditions && policy.healthConditions.length
-    ? policy.healthConditions.join(', ')
-    : 'None';
-  doc.text(`Health Conditions: ${healthConditions}`, 14, 140);
+    // Policy details
+    doc.text(`Coverage Amount: ${policy.coverageAmount?.toLocaleString() || 'N/A'} ৳`, 14, 140);
+    doc.text(`Term Duration: ${policy.termDuration || 'N/A'}`, 14, 150);
+    doc.text(`Premium: ${calculatePremium(policy.coverageAmount, policy.termDuration).toLocaleString()} ৳`, 14, 160);
+    doc.text(`Status: ${policy.status || 'N/A'}`, 14, 170);
 
-  doc.text(`Coverage Amount: ${policy.coverageAmount?.toLocaleString() || 'N/A'} ৳`, 14, 150);
-  doc.text(`Term Duration: ${policy.termDuration || 'N/A'}`, 14, 160);
-  doc.text(
-    `Premium: ${calculatePremium(policy.coverageAmount, policy.termDuration).toLocaleString()} ৳`,
-    14,
-    170
-  );
-  doc.text(`Status: ${policy.status || 'N/A'}`, 14, 180);
+    if (policy.status === 'Rejected' && policy.rejectFeedback) {
+      doc.text(`Rejection Feedback: ${policy.rejectFeedback}`, 14, 180);
+    }
 
-  if (policy.status === 'Rejected' && policy.rejectFeedback) {
-    doc.text(`Rejection Feedback: ${policy.rejectFeedback}`, 14, 190);
-  }
+    doc.text(`Submitted At: ${policy.submittedAt ? new Date(policy.submittedAt).toLocaleDateString() : 'N/A'}`, 14, 190);
 
-  doc.text(
-    `Submitted At: ${
-      policy.submittedAt ? new Date(policy.submittedAt).toLocaleDateString() : 'N/A'
-    }`,
-    14,
-    200
-  );
+    // Save the PDF
+    doc.save(`Policy_${policy.policyType}_${policy._id}.pdf`);
+  };
 
-  // Save the PDF with a descriptive filename
-  doc.save(`Policy_${policy.policyType}_${policy._id}.pdf`);
-};
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-10 px-4 sm:px-8">
       <div className="max-w-6xl mx-auto">
@@ -378,9 +360,19 @@ const MyPolicy = () => {
                           ? 'bg-red-500'
                           : 'bg-yellow-500'
                       }`}
+                      title={policy.status === 'Rejected' ? (policy.rejectFeedback || 'No rejection reason provided') : ''}
                     >
                       {policy.status}
                     </span>
+                    {/* Show rejection feedback snippet if rejected */}
+                    {policy.status === 'Rejected' && (
+                      <p
+                        className="text-xs mt-1 text-red-600 italic max-w-xs truncate"
+                        title={policy.rejectFeedback || 'No rejection reason provided'}
+                      >
+                        Reason: {policy.rejectFeedback || 'No rejection reason provided'}
+                      </p>
+                    )}
                   </td>
                   <td className="flex gap-2 flex-wrap">
                     <button

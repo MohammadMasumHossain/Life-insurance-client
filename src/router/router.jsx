@@ -24,6 +24,8 @@ import PaymentStatus from "../pages/Dashboard/Customer/PaymentStatus/PaymentStat
 import ClaimRequestPage from "../pages/Dashboard/Customer/ClaimRequestPage/ClaimRequestPage";
 import PolicyClearance from "../pages/Dashboard/Agent/PolicyClearance/PolicyClearance";
 import ManageTransactions from "../pages/Dashboard/Admin/ManageTransactions/ManageTransactions";
+import AdminRoute from "../routes/AdminRoute";
+import Forbidden from "../pages/Forbideen/Forbideen";
 // import PaymentStatus from "../pages/Dashboard/Customer/PaymentStatus/PaymentStatus";
 // import PaymentPage from "../pages/Dashboard/Customer/PaymentPage/PaymentPage";
 
@@ -36,6 +38,10 @@ export const router = createBrowserRouter([
       { path: "/blog", element: <Blog /> },
       { path: "/AllPolicies", element: <AllPolicies /> },
       { path: "/policies/:id", element: <PolicyDetails /> },
+      {
+        path:"/forbidden",
+        Component:Forbidden
+      },
       {
         path: "/quote",
         element: (
@@ -72,26 +78,26 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      { path: "mypolicy", element: <MyPolicy /> },
-      { path: "payment-status", element: <PaymentStatus /> }, // ✅ Added Payment Status
-      { path: "payment/:policyId", element: <PaymentPage /> }, // ✅ Added Payment Page
-      { path: "manageApplication", element: <ManageApplications /> },
-      { path: "manageuser", element: <ManageUser /> },
-      { path: "managepolicies", element: <ManagePolicies /> },
+      { path: "mypolicy", element: <CustomerRoute> <MyPolicy /></CustomerRoute>  },
+      { path: "payment-status", element:<CustomerRoute> <PaymentStatus /></CustomerRoute>  }, // ✅ Added Payment Status
+      { path: "payment/:policyId", element:<CustomerRoute> <PaymentPage /></CustomerRoute>  }, // ✅ Added Payment Page
+      { path: "manageApplication", element: <AdminRoute><ManageApplications /></AdminRoute> },
+      { path: "manageuser", element: <AdminRoute> <ManageUser /> </AdminRoute>  },
+      { path: "managepolicies", element: <AdminRoute> <ManagePolicies /></AdminRoute>  },
       { path: "assignedcustomers", element: <AssignedCustomers /> },
       { path: "manageblogs", element: <ManageBlogs /> },
       {
-        path:"claimrequestpage",
-        element:<ClaimRequestPage></ClaimRequestPage>
+        path: "claimrequestpage",
+        element: <ClaimRequestPage></ClaimRequestPage>,
       },
       {
-         path: "policy-clearance",
-         element: <PolicyClearance />
+        path: "policy-clearance",
+        element: <PolicyClearance />,
       },
       {
-         path: "manage-transactions",
-         element: <ManageTransactions />
-      }
+        path: "manage-transactions",
+        element: <AdminRoute><ManageTransactions /></AdminRoute> ,
+      },
     ],
   },
 ]);
