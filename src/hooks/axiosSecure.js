@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const axiosSecure = axios.create({
   baseURL: 'https://life-insurance-server-three.vercel.app',
-  withCredentials: false,
+  withCredentials: true,
 });
 
 axiosSecure.interceptors.request.use((config) => {
