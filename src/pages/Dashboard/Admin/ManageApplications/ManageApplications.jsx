@@ -9,7 +9,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-const API = 'http://localhost:3000';
+const API = 'https://life-insurance-server-three.vercel.app/';
 
 const statusColors = {
   Pending: 'bg-yellow-500',

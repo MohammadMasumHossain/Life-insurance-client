@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async";
 const fetchPolicies = async ({ queryKey }) => {
   const [_key, page, categoryFilter, searchTerm] = queryKey;
 
-  let query = `http://localhost:3000/policies?page=${page}&limit=9`;
+  let query = `https://life-insurance-server-three.vercel.app/policies?page=${page}&limit=9`;
 
   if (categoryFilter) {
     query += `&category=${encodeURIComponent(categoryFilter)}`;

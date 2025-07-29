@@ -21,7 +21,7 @@ const Register = () => {
   const { createUser, updateUserProfile } = useAuth();
 
   const createUserInDB = useMutation({
-    mutationFn: (userData) => axios.post('http://localhost:3000/users', userData),
+    mutationFn: (userData) => axios.post('https://life-insurance-server-three.vercel.app/users', userData),
     onSuccess: () => {
       Swal.fire({
         icon: 'success',

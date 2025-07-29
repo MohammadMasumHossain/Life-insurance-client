@@ -72,7 +72,7 @@ const ApplicationForm = () => {
     };
 
     try {
-      const res = await axios.post('http://localhost:3000/applications', application);
+      const res = await axios.post('https://life-insurance-server-three.vercel.app/applications', application);
       if (res.data.insertedId) {
         Swal.fire('Success!', 'Application submitted successfully!', 'success');
         reset();

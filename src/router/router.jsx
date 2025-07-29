@@ -30,6 +30,8 @@ import AgentRoute from "../routes/AgentRoute";
 import Forbidden from "../pages/Forbideen/Forbideen";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
+import ErrorPage from "../components/ErrorPage";
+// import ErrorPage from "../components/ErrorPage";
 // import PaymentStatus from "../pages/Dashboard/Customer/PaymentStatus/PaymentStatus";
 // import PaymentPage from "../pages/Dashboard/Customer/PaymentPage/PaymentPage";
 
@@ -45,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path:"/forbidden",
         Component:Forbidden
+      },
+     {
+     path: '*',
+     element: <ErrorPage />
       },
 
       {

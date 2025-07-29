@@ -13,7 +13,7 @@ const LatestBlog = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3000/blogs')
+      .get('https://life-insurance-server-three.vercel.app/blogs')
       .then(res => setBlogs(res.data.slice(0, 4))) // Ensure max 4 blogs
       .catch(err => console.error('Error fetching blogs:', err));
   }, []);

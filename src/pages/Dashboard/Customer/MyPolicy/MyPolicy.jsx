@@ -247,7 +247,7 @@ const MyPolicy = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`http://localhost:3000/applications?email=${user.email}`)
+        .get(`https://life-insurance-server-three.vercel.app/applications?email=${user.email}`)
         .then((res) => setPolicies(res.data))
         .catch((err) => console.error(err));
     }
@@ -276,7 +276,7 @@ const MyPolicy = () => {
     };
 
     try {
-      await axios.post('http://localhost:3000/reviews', review);
+      await axios.post('https://life-insurance-server-three.vercel.app/reviews', review);
       Swal.fire('Success', 'Review submitted successfully!', 'success');
       setShowModal(false);
     } catch (err) {

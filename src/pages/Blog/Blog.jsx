@@ -10,7 +10,7 @@ const Blog = () => {
   const { data: blogs = [], isLoading } = useQuery({
     queryKey: ["blogs"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/blogs"); // Replace with your backend URL if deployed
+      const res = await axios.get("https://life-insurance-server-three.vercel.app/blogs"); // Replace with your backend URL if deployed
       return res.data;
     },
   });

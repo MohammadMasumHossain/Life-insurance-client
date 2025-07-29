@@ -10,7 +10,7 @@ const CustomerReviews = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/reviews')
+    axios.get('https://life-insurance-server-three.vercel.app/reviews')
       .then(res => setReviews(res.data))
       .catch(err => console.error('Error fetching reviews:', err));
   }, []);

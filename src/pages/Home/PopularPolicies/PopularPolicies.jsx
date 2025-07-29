@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router'; // Correct import
 
 const fetchPopularPolicies = async () => {
-  const { data } = await axios.get('http://localhost:3000/policies');
+  const { data } = await axios.get('https://life-insurance-server-three.vercel.app/policies');
   return data.data; // return the array of policies here
 };
 

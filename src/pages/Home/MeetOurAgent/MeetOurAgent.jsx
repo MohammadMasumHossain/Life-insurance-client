@@ -7,7 +7,7 @@ const MeetOurAgent = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/agents')
+    axios.get('https://life-insurance-server-three.vercel.app/agents')
       .then(res => {
         setAgents(res.data);
         setLoading(false);

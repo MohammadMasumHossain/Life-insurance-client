@@ -16,7 +16,7 @@ const NewsletterSubscription = () => {
     setLoading(true);
 
     try {
-      await axios.post('http://localhost:3000/newsletter', formData);
+      await axios.post('https://life-insurance-server-three.vercel.app/newsletter', formData);
       toast.success('Thank you for subscribing!');
       setFormData({ name: '', email: '' });
     } catch (error) {
