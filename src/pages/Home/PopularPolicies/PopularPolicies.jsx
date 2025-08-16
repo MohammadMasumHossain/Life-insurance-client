@@ -29,13 +29,21 @@ const PopularPolicies = () => {
             className="bg-white shadow-md rounded-lg overflow-hidden flex flex-col transition-transform hover:scale-[1.02]"
           >
             {/* Image */}
-            <div className="w-full aspect-[16/9] bg-gray-100">
+            {/* <div className="w-full aspect-[16/9] bg-gray-100">
               <img
                 src={policy.image || 'https://via.placeholder.com/500x300?text=No+Image'}
                 alt={policy.title}
                 className="w-full h-full object-cover"
               />
-            </div>
+            </div> */}
+            <div className="w-full h-48 bg-gray-100">
+  <img
+    src={policy.image || 'https://via.placeholder.com/500x300?text=No+Image'}
+    alt={policy.title}
+    className="w-full h-full object-cover"
+  />
+</div>
+
 
             {/* Content */}
             <div className="p-5 flex-1 flex flex-col justify-between">
