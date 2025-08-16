@@ -36,13 +36,14 @@ const PopularPolicies = () => {
                 className="w-full h-full object-cover"
               />
             </div> */}
-            <div className="w-full h-48 bg-gray-100">
+           <div className="w-full h-48 bg-gray-100 overflow-hidden">
   <img
     src={policy.image || 'https://via.placeholder.com/500x300?text=No+Image'}
     alt={policy.title}
-    className="w-full h-full object-cover"
+    className="w-full object-contain object-top"
   />
 </div>
+
 
 
             {/* Content */}
