@@ -89,7 +89,7 @@ const Navbar2 = () => {
         <div className="navbar-end space-x-2">
           {user ? (
             <>
-              <Link to="/dashboard/profile" className="btn btn-sm btn-outline">
+              <Link to="/dashboard/profilecard" className="btn btn-sm btn-outline">
                 Profile
               </Link>
               <button onClick={handleSignOut} className="btn btn-sm btn-primary">

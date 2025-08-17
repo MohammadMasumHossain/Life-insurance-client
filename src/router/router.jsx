@@ -32,6 +32,8 @@ import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import ErrorPage from "../components/ErrorPage";
 import AboutUs from "../pages/AboutUs/AboutUs";
+import ProfileCard from "../pages/ProfileCard/ProfileCard";
+
 // import ErrorPage from "../components/ErrorPage";
 // import PaymentStatus from "../pages/Dashboard/Customer/PaymentStatus/PaymentStatus";
 // import PaymentPage from "../pages/Dashboard/Customer/PaymentPage/PaymentPage";
@@ -56,9 +58,13 @@ export const router = createBrowserRouter([
      path: '*',
      element: <ErrorPage />
       },
-
       {
         path:'profile',
+        element:<ProfileCard></ProfileCard>
+      },
+
+      {
+        path:'profilepage',
         element:<ProfilePage></ProfilePage>
       },
       

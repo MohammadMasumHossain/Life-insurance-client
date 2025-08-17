@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 
 const fetchPolicies = async ({ queryKey }) => {
-  const [_key, page, categoryFilter, searchTerm] = queryKey;
+  const [_key, page, categoryFilter, searchTerm, sortOrder] = queryKey;
 
   let query = `https://life-insurance-server-three.vercel.app/policies?page=${page}&limit=9`;
 
@@ -14,6 +14,9 @@ const fetchPolicies = async ({ queryKey }) => {
   }
   if (searchTerm) {
     query += `&search=${encodeURIComponent(searchTerm)}`;
+  }
+  if (sortOrder) {
+    query += `&sort=${sortOrder}`;
   }
 
   const { data } = await axios.get(query);
@@ -25,10 +28,11 @@ const AllPolicies = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState(""); // new state
   const navigate = useNavigate();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["policies", page, categoryFilter, searchTerm],
+    queryKey: ["policies", page, categoryFilter, searchTerm, sortOrder],
     queryFn: fetchPolicies,
     keepPreviousData: true,
   });
@@ -49,6 +53,11 @@ const AllPolicies = () => {
     setPage(1);
   };
 
+  const handleSortChange = (e) => {
+    setSortOrder(e.target.value);
+    setPage(1);
+  };
+
   return (
     <div className="max-w-screen-xl mt-20 mx-auto px-4 sm:px-6 lg:px-8 my-10">
       <Helmet>
@@ -58,8 +67,8 @@ const AllPolicies = () => {
         All Insurance Policies
       </h2>
 
-      {/* Search input */}
-      <div className="mb-4 flex justify-center gap-2">
+      {/* Search + Sort */}
+      <div className="mb-4 flex justify-center gap-2 flex-wrap">
         <input
           type="text"
           placeholder="Search by keyword..."
@@ -73,6 +82,15 @@ const AllPolicies = () => {
         <button className="btn btn-primary" onClick={handleSearch}>
           Search
         </button>
+        <select
+          value={sortOrder}
+          onChange={handleSortChange}
+          className="select select-bordered w-full max-w-xs"
+        >
+          <option value="">Sort by Coverage</option>
+          <option value="asc">Coverage: Low to High</option>
+          <option value="desc">Coverage: High to Low</option>
+        </select>
       </div>
 
       {/* Category filter */}
@@ -119,7 +137,7 @@ const AllPolicies = () => {
                       "https://via.placeholder.com/400x300?text=No+Image"
                     }
                     alt={policy.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover  object-top"
                   />
                 </div>
 
