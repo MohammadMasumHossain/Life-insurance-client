@@ -10,7 +10,9 @@ const Blog = () => {
   const { data: blogs = [], isLoading } = useQuery({
     queryKey: ["blogs"],
     queryFn: async () => {
-      const res = await axios.get("https://life-insurance-server-three.vercel.app/blogs"); // Replace with your backend URL if deployed
+      const res = await axios.get(
+        "https://life-insurance-server-three.vercel.app/blogs"
+      ); // Replace with your backend URL if deployed
       return res.data;
     },
   });
@@ -19,14 +21,15 @@ const Blog = () => {
     return <div className="text-center py-10">Loading blogs...</div>;
 
   return (
-    <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="max-w-7xl mx-auto mt-20 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <Helmet>
         <title>Blog | My Insurance Platform</title>
       </Helmet>
+
       {blogs.map((blog) => (
         <div
           key={blog._id}
-          className="bg-white shadow-md rounded-lg overflow-hidden"
+          className="bg-gray-50 shadow-md rounded-lg overflow-hidden"
         >
           <img
             src={blog.image}
@@ -60,7 +63,7 @@ const Blog = () => {
 
             <button
               onClick={() => setSelectedBlog(blog)}
-              className="mt-3 inline-block bg-fuchsia-600 text-white text-sm px-4 py-2 rounded hover:bg-fuchsia-700 transition"
+              className="mt-3 inline-block bg-sky-600 text-white text-sm px-4 py-2 rounded hover:bg-sky-700 transition"
             >
               Read More
             </button>

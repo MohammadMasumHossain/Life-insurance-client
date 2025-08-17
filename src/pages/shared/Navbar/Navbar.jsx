@@ -82,7 +82,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-base-100 shadow-sm z-50">
+    <div className="fixed top-0  left-0 w-full bg-base-100 shadow-sm z-50">
       <div className="navbar px-4 py-2 max-w-7xl mx-auto">
         
         {/* Left Side */}

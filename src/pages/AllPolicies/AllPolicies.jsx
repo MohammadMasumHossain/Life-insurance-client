@@ -50,7 +50,7 @@ const AllPolicies = () => {
   };
 
   return (
-    <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 my-10">
+    <div className="max-w-screen-xl mt-20 mx-auto px-4 sm:px-6 lg:px-8 my-10">
       <Helmet>
         <title>All policies | My Insurance Platform</title>
       </Helmet>
@@ -106,10 +106,11 @@ const AllPolicies = () => {
             {data.data.map((policy) => (
               <div
                 key={policy._id}
-                className="rounded-xl shadow-md p-5 transition-transform duration-300 bg-blue-100 hover:shadow-xl"
+                className="rounded-xl shadow-md p-5 transition-transform duration-300 bg-gray-50 hover:shadow-xl flex flex-col justify-between h-[450px]"
               >
+                {/* Image */}
                 <div
-                  className="rounded-md overflow-hidden mb-4 cursor-pointer"
+                  className="rounded-md overflow-hidden mb-4 cursor-pointer w-full h-48 bg-white flex justify-center items-center"
                   onClick={() => navigate(`/policies/${policy._id}`)}
                 >
                   <img
@@ -118,20 +119,24 @@ const AllPolicies = () => {
                       "https://via.placeholder.com/400x300?text=No+Image"
                     }
                     alt={policy.title}
-                    className="w-full h-[200px] object-contain bg-white"
+                    className="w-full h-full object-cover"
                   />
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  {policy.title}
-                </h3>
-                <p className="text-base text-gray-700 mb-1">
-                  <strong>Category:</strong> {policy.category || "N/A"}
-                </p>
-                <p className="text-base text-gray-700 truncate">
-                  {policy.description || "No description available."}
-                </p>
+                {/* Text */}
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">
+                    {policy.title}
+                  </h3>
+                  <p className="text-base text-gray-700 mb-1">
+                    <strong>Category:</strong> {policy.category || "N/A"}
+                  </p>
+                  <p className="text-base text-gray-700 truncate">
+                    {policy.description || "No description available."}
+                  </p>
+                </div>
 
+                {/* Button */}
                 <div className="flex justify-center mt-4">
                   <button
                     onClick={() => navigate(`/policies/${policy._id}`)}
