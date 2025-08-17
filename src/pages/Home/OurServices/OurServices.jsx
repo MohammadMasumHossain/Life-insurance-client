@@ -36,7 +36,7 @@ const OurServices = () => {
 
   return (
     <section className="bg-white py-16 px-6">
-      <h2 className="text-4xl font-extrabold text-center text-sky-800 mb-12 tracking-wide">Our Services</h2>
+      <h2 className="text-4xl font-extrabold text-center text-black mb-12 tracking-wide">Our Services</h2>
       <div className="max-w-7xl mx-auto grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service, index) => (
           <div
@@ -45,7 +45,7 @@ const OurServices = () => {
           >
             {service.icon}
             <h3 className="text-2xl font-semibold text-black mb-2">{service.title}</h3>
-            <p className="text-gray-700">{service.description}</p>
+            <p className="text-black">{service.description}</p>
           </div>
         ))}
       </div>

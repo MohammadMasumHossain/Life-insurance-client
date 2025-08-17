@@ -6,6 +6,9 @@ import LatestBlog from '../LatestBlog/LatestBlog';
 import NewsletterSubscription from '../NewsletterSubscription/NewsletterSubscription';
 import MeetOurAgent from '../MeetOurAgent/MeetOurAgent';
 import { Helmet } from 'react-helmet-async';
+import OurServices from '../OurServices/OurServices';
+import MajorPartners from '../MajorPartners/MajorPartners';
+import Achievements from '../Achievements/Achievements';
 
 
 const Home = () => {
@@ -17,8 +20,11 @@ const Home = () => {
            
            <Hero></Hero>
            <PopularPolicies></PopularPolicies>
+           <OurServices></OurServices>
            <CustomerReviews></CustomerReviews>
            <LatestBlog></LatestBlog>
+           
+           <Achievements></Achievements>
             <NewsletterSubscription></NewsletterSubscription>
             <MeetOurAgent></MeetOurAgent>
         </div>
