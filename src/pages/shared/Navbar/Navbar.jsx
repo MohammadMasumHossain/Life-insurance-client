@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router'; // ✅ FIXED
+import { Link, NavLink } from 'react-router-dom'; // ✅ FIXED
 import logo from '../../../assets/logo.png';
 import useAuth from '../../../hooks/useAuth';
 import Swal from 'sweetalert2'; // ✅ Import SweetAlert
@@ -28,10 +28,56 @@ const Navbar = () => {
 
   const navItems = (
     <>
-      <li><NavLink to="/" className="font-semibold">Home</NavLink></li>
-      <li><NavLink to="/AllPolicies" className="font-semibold">All Policies</NavLink></li>
-      <li><NavLink to="/blog" className="font-semibold">Blog</NavLink></li>
-      <li><NavLink to="/dashboard" className="font-semibold">Dashboard</NavLink></li>
+      <li>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `font-semibold ${isActive ? "text-primary border-b-2 border-primary" : "text-gray-600"}`
+          }
+        >
+          Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/AllPolicies"
+          className={({ isActive }) =>
+            `font-semibold ${isActive ? "text-primary border-b-2 border-primary" : "text-gray-600"}`
+          }
+        >
+          All Policies
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/blog"
+          className={({ isActive }) =>
+            `font-semibold ${isActive ? "text-primary border-b-2 border-primary" : "text-gray-600"}`
+          }
+        >
+          Blog
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/aboutus"
+          className={({ isActive }) =>
+            `font-semibold ${isActive ? "text-primary border-b-2 border-primary" : "text-gray-600"}`
+          }
+        >
+          About Us
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            `font-semibold ${isActive ? "text-primary border-b-2 border-primary" : "text-gray-600"}`
+          }
+        >
+          Dashboard
+        </NavLink>
+      </li>
     </>
   );
 

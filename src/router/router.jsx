@@ -31,6 +31,7 @@ import Forbidden from "../pages/Forbideen/Forbideen";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import ErrorPage from "../components/ErrorPage";
+import AboutUs from "../pages/AboutUs/AboutUs";
 // import ErrorPage from "../components/ErrorPage";
 // import PaymentStatus from "../pages/Dashboard/Customer/PaymentStatus/PaymentStatus";
 // import PaymentPage from "../pages/Dashboard/Customer/PaymentPage/PaymentPage";
@@ -43,6 +44,9 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "/blog", element: <Blog /> },
       { path: "/AllPolicies", element: <AllPolicies /> },
+      {
+        path: "/aboutus", element:<AboutUs></AboutUs>
+      },
       { path: "/policies/:id", element: <PolicyDetails /> },
       {
         path:"/forbidden",
