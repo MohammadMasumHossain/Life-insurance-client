@@ -3,8 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { Dialog } from '@headlessui/react';
 
-const bgColors = ['bg-pink-50', 'bg-green-50', 'bg-yellow-50', 'bg-blue-50'];
-
 const LatestBlog = () => {
   const [blogs, setBlogs] = useState([]);
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -29,7 +27,7 @@ const LatestBlog = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-12 px-6">
+    <div className="max-w-7xl mx-auto py-12 px-6">
       <h2 className="text-4xl font-extrabold text-center mb-2 text-black">
         Latest Blog & Articles
       </h2>
@@ -38,10 +36,10 @@ const LatestBlog = () => {
       </p>
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-        {blogs.map((blog, index) => (
+        {blogs.map((blog) => (
           <div
             key={blog._id}
-            className={`${bgColors[index % bgColors.length]} rounded-lg shadow-lg p-6 flex flex-col hover:shadow-2xl transition-shadow duration-300`}
+            className="bg-gray-50 rounded-lg shadow-lg p-6 flex flex-col hover:shadow-2xl transition-shadow duration-300"
           >
             <h3 className="text-xl font-bold mb-2 text-black line-clamp-2">
               {blog.title}
@@ -49,7 +47,7 @@ const LatestBlog = () => {
             <p className="text-gray-700 mb-4 line-clamp-2">{blog.content}</p>
             <button
               onClick={() => openModal(blog)}
-              className="mt-auto inline-block bg-sky-600 hover:bg-sky-700  text-white font-semibold px-5 py-2 rounded-md transition"
+              className="mt-auto inline-block bg-sky-600 hover:bg-sky-700 text-white font-semibold px-5 py-2 rounded-md transition"
             >
               Read More
             </button>
@@ -60,7 +58,7 @@ const LatestBlog = () => {
       <div className="text-center mt-12">
         <button
           onClick={() => navigate('/blog')}
-          className="inline-block bg-sky-600 hover:bg-sky-700  text-white font-semibold px-8 py-3 rounded-md transition"
+          className="inline-block bg-sky-600 hover:bg-sky-700 text-white font-semibold px-8 py-3 rounded-md transition"
         >
           All Blogs & Articles
         </button>
@@ -87,7 +85,6 @@ const LatestBlog = () => {
               {selectedBlog?.content}
             </p>
 
-            {/* Show author name and email only */}
             {(selectedBlog?.author || selectedBlog?.authorEmail) && (
               <div className="border-t pt-4 text-sm text-gray-600">
                 {selectedBlog?.author && <p><strong>Author:</strong> {selectedBlog.author}</p>}

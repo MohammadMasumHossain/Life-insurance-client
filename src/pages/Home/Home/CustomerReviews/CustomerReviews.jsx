@@ -16,8 +16,8 @@ const CustomerReviews = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto py-10 px-4">
-      <h2 className="text-3xl font-bold text-center mb-6 text-fuchsia-600">What Our Customers Say</h2>
+    <div className="max-w-7xl mx-auto py-10 px-4">
+      <h2 className="text-3xl font-bold text-center mb-6 text-black">What Our Customers Say</h2>
 
       <Swiper
         slidesPerView={1}
@@ -33,20 +33,20 @@ const CustomerReviews = () => {
       >
         {reviews.map((review) => (
           <SwiperSlide key={review._id}>
-            <div className="bg-sky-50 shadow-md rounded-xl p-6 h-[250px] flex flex-col justify-between">
+            <div className="bg-gray-50 shadow-md rounded-xl p-6 h-[250px] flex flex-col justify-between text-black">
               <div className="flex items-center gap-4 mb-4">
                 <img
                   src={review.photo}
                   alt={review.name}
-                  className="w-14 h-14 rounded-full object-cover border-2 border-fuchsia-500"
+                  className="w-14 h-14 rounded-full object-cover border-2 border-blue-600"
                 />
                 <div>
                   <h4 className="font-semibold text-lg">{review.name}</h4>
-                  <p className="text-sm text-gray-500">{review.policyTitle}</p>
+                  <p className="text-sm text-gray-600">{review.policyTitle}</p>
                 </div>
               </div>
 
-              <p className="text-gray-700 mb-4 italic overflow-hidden text-ellipsis" style={{ flexGrow: 1 }}>
+              <p className="text-gray-800 mb-4 italic overflow-hidden text-ellipsis" style={{ flexGrow: 1 }}>
                 "{review.feedback}"
               </p>
 

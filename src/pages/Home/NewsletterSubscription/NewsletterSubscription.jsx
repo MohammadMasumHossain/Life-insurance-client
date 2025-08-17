@@ -28,10 +28,10 @@ const NewsletterSubscription = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-sky-50 rounded shadow">
+    <div className="max-w-7xl mx-auto p-6 bg-gray-50 rounded shadow">
       <h2 className="text-2xl font-bold mb-4 text-center">Subscribe to our Newsletter</h2>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md mx-auto">
         <input
           type="text"
           name="name"

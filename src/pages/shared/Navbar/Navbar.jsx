@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom'; // ✅ FIXED
+import { Link, NavLink } from 'react-router'; // ✅ FIXED
 import logo from '../../../assets/logo.png';
 import useAuth from '../../../hooks/useAuth';
 import Swal from 'sweetalert2'; // ✅ Import SweetAlert

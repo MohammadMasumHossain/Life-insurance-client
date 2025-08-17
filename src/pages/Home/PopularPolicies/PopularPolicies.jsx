@@ -26,7 +26,7 @@ const PopularPolicies = () => {
         {policies.slice(0, 6).map((policy) => (
           <div
             key={policy._id}
-            className="bg-white shadow-md rounded-lg overflow-hidden flex flex-col transition-transform hover:scale-[1.02]"
+            className="bg-gray-50 shadow-md rounded-lg overflow-hidden flex flex-col transition-transform hover:scale-[1.02]"
           >
             {/* Image */}
             {/* <div className="w-full aspect-[16/9] bg-gray-100">
